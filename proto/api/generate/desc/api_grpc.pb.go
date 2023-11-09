@@ -19,18 +19,16 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	QuoteService_GetRandomQuote_FullMethodName = "/api.QuoteService/GetRandomQuote"
-	QuoteService_LikeQuote_FullMethodName      = "/api.QuoteService/LikeQuote"
-	QuoteService_DislikeQuote_FullMethodName   = "/api.QuoteService/DislikeQuote"
+	QuoteService_GetUser_FullMethodName    = "/api.QuoteService/GetUser"
+	QuoteService_DeleteUser_FullMethodName = "/api.QuoteService/DeleteUser"
 )
 
 // QuoteServiceClient is the client API for QuoteService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type QuoteServiceClient interface {
-	GetRandomQuote(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Quote, error)
-	LikeQuote(ctx context.Context, in *RatingRequest, opts ...grpc.CallOption) (*RatingResponse, error)
-	DislikeQuote(ctx context.Context, in *RatingRequest, opts ...grpc.CallOption) (*RatingResponse, error)
+	GetUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*User, error)
+	DeleteUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*ResultMessage, error)
 }
 
 type quoteServiceClient struct {
@@ -41,27 +39,18 @@ func NewQuoteServiceClient(cc grpc.ClientConnInterface) QuoteServiceClient {
 	return &quoteServiceClient{cc}
 }
 
-func (c *quoteServiceClient) GetRandomQuote(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Quote, error) {
-	out := new(Quote)
-	err := c.cc.Invoke(ctx, QuoteService_GetRandomQuote_FullMethodName, in, out, opts...)
+func (c *quoteServiceClient) GetUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*User, error) {
+	out := new(User)
+	err := c.cc.Invoke(ctx, QuoteService_GetUser_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *quoteServiceClient) LikeQuote(ctx context.Context, in *RatingRequest, opts ...grpc.CallOption) (*RatingResponse, error) {
-	out := new(RatingResponse)
-	err := c.cc.Invoke(ctx, QuoteService_LikeQuote_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *quoteServiceClient) DislikeQuote(ctx context.Context, in *RatingRequest, opts ...grpc.CallOption) (*RatingResponse, error) {
-	out := new(RatingResponse)
-	err := c.cc.Invoke(ctx, QuoteService_DislikeQuote_FullMethodName, in, out, opts...)
+func (c *quoteServiceClient) DeleteUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*ResultMessage, error) {
+	out := new(ResultMessage)
+	err := c.cc.Invoke(ctx, QuoteService_DeleteUser_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -72,9 +61,8 @@ func (c *quoteServiceClient) DislikeQuote(ctx context.Context, in *RatingRequest
 // All implementations must embed UnimplementedQuoteServiceServer
 // for forward compatibility
 type QuoteServiceServer interface {
-	GetRandomQuote(context.Context, *Empty) (*Quote, error)
-	LikeQuote(context.Context, *RatingRequest) (*RatingResponse, error)
-	DislikeQuote(context.Context, *RatingRequest) (*RatingResponse, error)
+	GetUser(context.Context, *UserRequest) (*User, error)
+	DeleteUser(context.Context, *UserRequest) (*ResultMessage, error)
 	mustEmbedUnimplementedQuoteServiceServer()
 }
 
@@ -82,14 +70,11 @@ type QuoteServiceServer interface {
 type UnimplementedQuoteServiceServer struct {
 }
 
-func (UnimplementedQuoteServiceServer) GetRandomQuote(context.Context, *Empty) (*Quote, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetRandomQuote not implemented")
+func (UnimplementedQuoteServiceServer) GetUser(context.Context, *UserRequest) (*User, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
 }
-func (UnimplementedQuoteServiceServer) LikeQuote(context.Context, *RatingRequest) (*RatingResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method LikeQuote not implemented")
-}
-func (UnimplementedQuoteServiceServer) DislikeQuote(context.Context, *RatingRequest) (*RatingResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DislikeQuote not implemented")
+func (UnimplementedQuoteServiceServer) DeleteUser(context.Context, *UserRequest) (*ResultMessage, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
 }
 func (UnimplementedQuoteServiceServer) mustEmbedUnimplementedQuoteServiceServer() {}
 
@@ -104,56 +89,38 @@ func RegisterQuoteServiceServer(s grpc.ServiceRegistrar, srv QuoteServiceServer)
 	s.RegisterService(&QuoteService_ServiceDesc, srv)
 }
 
-func _QuoteService_GetRandomQuote_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Empty)
+func _QuoteService_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QuoteServiceServer).GetRandomQuote(ctx, in)
+		return srv.(QuoteServiceServer).GetUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: QuoteService_GetRandomQuote_FullMethodName,
+		FullMethod: QuoteService_GetUser_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QuoteServiceServer).GetRandomQuote(ctx, req.(*Empty))
+		return srv.(QuoteServiceServer).GetUser(ctx, req.(*UserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _QuoteService_LikeQuote_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RatingRequest)
+func _QuoteService_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QuoteServiceServer).LikeQuote(ctx, in)
+		return srv.(QuoteServiceServer).DeleteUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: QuoteService_LikeQuote_FullMethodName,
+		FullMethod: QuoteService_DeleteUser_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QuoteServiceServer).LikeQuote(ctx, req.(*RatingRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _QuoteService_DislikeQuote_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RatingRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(QuoteServiceServer).DislikeQuote(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: QuoteService_DislikeQuote_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QuoteServiceServer).DislikeQuote(ctx, req.(*RatingRequest))
+		return srv.(QuoteServiceServer).DeleteUser(ctx, req.(*UserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -166,16 +133,12 @@ var QuoteService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*QuoteServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetRandomQuote",
-			Handler:    _QuoteService_GetRandomQuote_Handler,
+			MethodName: "GetUser",
+			Handler:    _QuoteService_GetUser_Handler,
 		},
 		{
-			MethodName: "LikeQuote",
-			Handler:    _QuoteService_LikeQuote_Handler,
-		},
-		{
-			MethodName: "DislikeQuote",
-			Handler:    _QuoteService_DislikeQuote_Handler,
+			MethodName: "DeleteUser",
+			Handler:    _QuoteService_DeleteUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

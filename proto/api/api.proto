@@ -5,43 +5,31 @@ package api;
 import "google/api/annotations.proto";
 option go_package = "generate/desc";
 
+message Empty {}
 
-message Quote {
-  string id = 1;
-  string content = 2;
-  int64 rating = 3;
+message User {
+  int64 id = 1;
+  string name = 2;
+  int32 age = 3;
 }
 
 service QuoteService {
-  rpc GetRandomQuote(Empty) returns (Quote){
+  rpc GetUser(UserRequest) returns (User) {
     option (google.api.http) = {
-      get: "/random-quote"
+      get: "/user"
     };
   };
-  rpc LikeQuote(RatingRequest) returns (RatingResponse){
+  rpc DeleteUser(UserRequest) returns (ResultMessage){
     option (google.api.http) = {
-      post : "/rating/like"
-      body: "*"
-    };
-  };
-  rpc DislikeQuote(RatingRequest) returns (RatingResponse){
-    option (google.api.http) = {
-      post : "/rating/dislike"
-      body: "*"
+      delete : "/user"
     };
   };
 }
 
-message RatingRequest {
-  string id = 1;
+message UserRequest {
+  int64 id = 1;
 }
 
-message RatingResponse {
-  int64 rating = 1;
-  string message = 2;
+message ResultMessage {
+  string result = 1;
 }
-
-message Empty {
-
-}
-
