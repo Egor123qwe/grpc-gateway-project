@@ -2,6 +2,8 @@ package grpcGwServer
 
 import (
 	"context"
+	"fmt"
+	"github.com/Egor123qwe/grpc-gateway-project/internal/config"
 	quotepb "github.com/Egor123qwe/grpc-gateway-project/proto/api/generate/desc"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"golang.org/x/exp/slog"
@@ -9,12 +11,13 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"log"
 	"net/http"
+	"strconv"
 )
 
-func Start(ctx context.Context) error {
+func Start(ctx context.Context, config *config.Config) error {
 	conn, err := grpc.DialContext(
 		context.Background(),
-		"localhost:8080",
+		"localhost:"+strconv.Itoa(config.GrpcPort),
 		grpc.WithBlock(),
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	)
@@ -23,12 +26,12 @@ func Start(ctx context.Context) error {
 	}
 
 	gwMux := runtime.NewServeMux()
-	err = quotepb.RegisterQuoteServiceHandler(context.Background(), gwMux, conn)
+	err = quotepb.RegisterUserServiceHandler(context.Background(), gwMux, conn)
 	if err != nil {
 		log.Fatalln("Failed to register gateway : ", err)
 	}
 	gwServer := &http.Server{
-		Addr:    ":8000",
+		Addr:    fmt.Sprintf(":%d", config.GateWayPort),
 		Handler: gwMux,
 	}
 	log.Println("serving grpc-gateway on http://localhost:8000")

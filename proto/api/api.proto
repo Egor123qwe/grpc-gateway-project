@@ -9,27 +9,45 @@ message Empty {}
 
 message User {
   int64 id = 1;
-  string name = 2;
-  int32 age = 3;
+  string token = 2;
+  string email = 3;
+  string name = 4;
+  int32 age = 5;
 }
 
-service QuoteService {
-  rpc GetUser(UserRequest) returns (User) {
+service UserService {
+  rpc CreateUser(Empty) returns (Empty) {
+    option (google.api.http) = {
+      post: "/user"
+    };
+  };
+  rpc GetUser(UserRequest) returns (Empty) {
     option (google.api.http) = {
       get: "/user"
     };
   };
-  rpc DeleteUser(UserRequest) returns (ResultMessage){
+  rpc DeleteUser(UserRequest) returns (Empty){
     option (google.api.http) = {
-      delete : "/user"
+      delete: "/user"
     };
   };
+  rpc EgitUser(UserRequest) returns (Empty){
+    option (google.api.http) = {
+      put: "/user"
+    };
+  };
+  rpc SubscribeUser(UserRequest) returns (Empty){
+    option (google.api.http) = {
+      post: "/user/subscribe"
+    };
+  }
+  rpc UnsubscribeUser(UserRequest) returns (Empty) {
+    option (google.api.http) = {
+      delete: "/user/subscribe"
+    };
+  }
 }
 
 message UserRequest {
   int64 id = 1;
-}
-
-message ResultMessage {
-  string result = 1;
 }

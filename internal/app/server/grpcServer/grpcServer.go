@@ -2,6 +2,8 @@ package grpcServer
 
 import (
 	"context"
+	"fmt"
+	"github.com/Egor123qwe/grpc-gateway-project/internal/config"
 	"github.com/Egor123qwe/grpc-gateway-project/proto/api/generate/desc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -9,19 +11,16 @@ import (
 	"net"
 )
 
-type server struct {
-	desc.UnimplementedQuoteServiceServer
-}
-
-func Start(ctx context.Context) error {
-	lis, err := net.Listen("tcp", ":8080")
+func Start(ctx context.Context, service desc.UserServiceServer, config *config.Config) error {
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", config.GrpcPort))
 	if err != nil {
 		log.Fatalln("Failed to listen grpc server: ", err)
 	}
+
 	s := grpc.NewServer()
 	reflection.Register(s)
-	desc.RegisterQuoteServiceServer(s, &server{})
-	log.Println("serving gRPC on localhost:8080")
+	desc.RegisterUserServiceServer(s, service)
+	log.Printf("serving gRPC on http://localhost:%d\n", config.GrpcPort)
 
 	errCh := make(chan error)
 	go func() {

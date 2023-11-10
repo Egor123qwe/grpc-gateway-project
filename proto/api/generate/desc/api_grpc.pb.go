@@ -19,126 +19,274 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	QuoteService_GetUser_FullMethodName    = "/api.QuoteService/GetUser"
-	QuoteService_DeleteUser_FullMethodName = "/api.QuoteService/DeleteUser"
+	UserService_CreateUser_FullMethodName      = "/api.UserService/CreateUser"
+	UserService_GetUser_FullMethodName         = "/api.UserService/GetUser"
+	UserService_DeleteUser_FullMethodName      = "/api.UserService/DeleteUser"
+	UserService_EgitUser_FullMethodName        = "/api.UserService/EgitUser"
+	UserService_SubscribeUser_FullMethodName   = "/api.UserService/SubscribeUser"
+	UserService_UnsubscribeUser_FullMethodName = "/api.UserService/UnsubscribeUser"
 )
 
-// QuoteServiceClient is the client API for QuoteService service.
+// UserServiceClient is the client API for UserService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type QuoteServiceClient interface {
-	GetUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*User, error)
-	DeleteUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*ResultMessage, error)
+type UserServiceClient interface {
+	CreateUser(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Empty, error)
+	GetUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*Empty, error)
+	DeleteUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*Empty, error)
+	EgitUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*Empty, error)
+	SubscribeUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*Empty, error)
+	UnsubscribeUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*Empty, error)
 }
 
-type quoteServiceClient struct {
+type userServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewQuoteServiceClient(cc grpc.ClientConnInterface) QuoteServiceClient {
-	return &quoteServiceClient{cc}
+func NewUserServiceClient(cc grpc.ClientConnInterface) UserServiceClient {
+	return &userServiceClient{cc}
 }
 
-func (c *quoteServiceClient) GetUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*User, error) {
-	out := new(User)
-	err := c.cc.Invoke(ctx, QuoteService_GetUser_FullMethodName, in, out, opts...)
+func (c *userServiceClient) CreateUser(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, UserService_CreateUser_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *quoteServiceClient) DeleteUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*ResultMessage, error) {
-	out := new(ResultMessage)
-	err := c.cc.Invoke(ctx, QuoteService_DeleteUser_FullMethodName, in, out, opts...)
+func (c *userServiceClient) GetUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, UserService_GetUser_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// QuoteServiceServer is the server API for QuoteService service.
-// All implementations must embed UnimplementedQuoteServiceServer
+func (c *userServiceClient) DeleteUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, UserService_DeleteUser_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) EgitUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, UserService_EgitUser_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) SubscribeUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, UserService_SubscribeUser_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) UnsubscribeUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, UserService_UnsubscribeUser_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// UserServiceServer is the server API for UserService service.
+// All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
-type QuoteServiceServer interface {
-	GetUser(context.Context, *UserRequest) (*User, error)
-	DeleteUser(context.Context, *UserRequest) (*ResultMessage, error)
-	mustEmbedUnimplementedQuoteServiceServer()
+type UserServiceServer interface {
+	CreateUser(context.Context, *Empty) (*Empty, error)
+	GetUser(context.Context, *UserRequest) (*Empty, error)
+	DeleteUser(context.Context, *UserRequest) (*Empty, error)
+	EgitUser(context.Context, *UserRequest) (*Empty, error)
+	SubscribeUser(context.Context, *UserRequest) (*Empty, error)
+	UnsubscribeUser(context.Context, *UserRequest) (*Empty, error)
+	mustEmbedUnimplementedUserServiceServer()
 }
 
-// UnimplementedQuoteServiceServer must be embedded to have forward compatible implementations.
-type UnimplementedQuoteServiceServer struct {
+// UnimplementedUserServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedUserServiceServer struct {
 }
 
-func (UnimplementedQuoteServiceServer) GetUser(context.Context, *UserRequest) (*User, error) {
+func (UnimplementedUserServiceServer) CreateUser(context.Context, *Empty) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
+}
+func (UnimplementedUserServiceServer) GetUser(context.Context, *UserRequest) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
 }
-func (UnimplementedQuoteServiceServer) DeleteUser(context.Context, *UserRequest) (*ResultMessage, error) {
+func (UnimplementedUserServiceServer) DeleteUser(context.Context, *UserRequest) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
 }
-func (UnimplementedQuoteServiceServer) mustEmbedUnimplementedQuoteServiceServer() {}
+func (UnimplementedUserServiceServer) EgitUser(context.Context, *UserRequest) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EgitUser not implemented")
+}
+func (UnimplementedUserServiceServer) SubscribeUser(context.Context, *UserRequest) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubscribeUser not implemented")
+}
+func (UnimplementedUserServiceServer) UnsubscribeUser(context.Context, *UserRequest) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UnsubscribeUser not implemented")
+}
+func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
-// UnsafeQuoteServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to QuoteServiceServer will
+// UnsafeUserServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to UserServiceServer will
 // result in compilation errors.
-type UnsafeQuoteServiceServer interface {
-	mustEmbedUnimplementedQuoteServiceServer()
+type UnsafeUserServiceServer interface {
+	mustEmbedUnimplementedUserServiceServer()
 }
 
-func RegisterQuoteServiceServer(s grpc.ServiceRegistrar, srv QuoteServiceServer) {
-	s.RegisterService(&QuoteService_ServiceDesc, srv)
+func RegisterUserServiceServer(s grpc.ServiceRegistrar, srv UserServiceServer) {
+	s.RegisterService(&UserService_ServiceDesc, srv)
 }
 
-func _QuoteService_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _UserService_CreateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).CreateUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_CreateUser_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).CreateUser(ctx, req.(*Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QuoteServiceServer).GetUser(ctx, in)
+		return srv.(UserServiceServer).GetUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: QuoteService_GetUser_FullMethodName,
+		FullMethod: UserService_GetUser_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QuoteServiceServer).GetUser(ctx, req.(*UserRequest))
+		return srv.(UserServiceServer).GetUser(ctx, req.(*UserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _QuoteService_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _UserService_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QuoteServiceServer).DeleteUser(ctx, in)
+		return srv.(UserServiceServer).DeleteUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: QuoteService_DeleteUser_FullMethodName,
+		FullMethod: UserService_DeleteUser_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QuoteServiceServer).DeleteUser(ctx, req.(*UserRequest))
+		return srv.(UserServiceServer).DeleteUser(ctx, req.(*UserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// QuoteService_ServiceDesc is the grpc.ServiceDesc for QuoteService service.
+func _UserService_EgitUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).EgitUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_EgitUser_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).EgitUser(ctx, req.(*UserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_SubscribeUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).SubscribeUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_SubscribeUser_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).SubscribeUser(ctx, req.(*UserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_UnsubscribeUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).UnsubscribeUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_UnsubscribeUser_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).UnsubscribeUser(ctx, req.(*UserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var QuoteService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "api.QuoteService",
-	HandlerType: (*QuoteServiceServer)(nil),
+var UserService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "api.UserService",
+	HandlerType: (*UserServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
+			MethodName: "CreateUser",
+			Handler:    _UserService_CreateUser_Handler,
+		},
+		{
 			MethodName: "GetUser",
-			Handler:    _QuoteService_GetUser_Handler,
+			Handler:    _UserService_GetUser_Handler,
 		},
 		{
 			MethodName: "DeleteUser",
-			Handler:    _QuoteService_DeleteUser_Handler,
+			Handler:    _UserService_DeleteUser_Handler,
+		},
+		{
+			MethodName: "EgitUser",
+			Handler:    _UserService_EgitUser_Handler,
+		},
+		{
+			MethodName: "SubscribeUser",
+			Handler:    _UserService_SubscribeUser_Handler,
+		},
+		{
+			MethodName: "UnsubscribeUser",
+			Handler:    _UserService_UnsubscribeUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
