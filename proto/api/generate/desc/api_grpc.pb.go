@@ -22,7 +22,7 @@ const (
 	UserService_CreateUser_FullMethodName      = "/api.UserService/CreateUser"
 	UserService_GetUser_FullMethodName         = "/api.UserService/GetUser"
 	UserService_DeleteUser_FullMethodName      = "/api.UserService/DeleteUser"
-	UserService_EgitUser_FullMethodName        = "/api.UserService/EgitUser"
+	UserService_EditUser_FullMethodName        = "/api.UserService/EditUser"
 	UserService_SubscribeUser_FullMethodName   = "/api.UserService/SubscribeUser"
 	UserService_UnsubscribeUser_FullMethodName = "/api.UserService/UnsubscribeUser"
 )
@@ -34,7 +34,7 @@ type UserServiceClient interface {
 	CreateUser(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Empty, error)
 	GetUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*Empty, error)
 	DeleteUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*Empty, error)
-	EgitUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*Empty, error)
+	EditUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*Empty, error)
 	SubscribeUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*Empty, error)
 	UnsubscribeUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*Empty, error)
 }
@@ -74,9 +74,9 @@ func (c *userServiceClient) DeleteUser(ctx context.Context, in *UserRequest, opt
 	return out, nil
 }
 
-func (c *userServiceClient) EgitUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*Empty, error) {
+func (c *userServiceClient) EditUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
-	err := c.cc.Invoke(ctx, UserService_EgitUser_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, UserService_EditUser_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -108,7 +108,7 @@ type UserServiceServer interface {
 	CreateUser(context.Context, *Empty) (*Empty, error)
 	GetUser(context.Context, *UserRequest) (*Empty, error)
 	DeleteUser(context.Context, *UserRequest) (*Empty, error)
-	EgitUser(context.Context, *UserRequest) (*Empty, error)
+	EditUser(context.Context, *UserRequest) (*Empty, error)
 	SubscribeUser(context.Context, *UserRequest) (*Empty, error)
 	UnsubscribeUser(context.Context, *UserRequest) (*Empty, error)
 	mustEmbedUnimplementedUserServiceServer()
@@ -127,8 +127,8 @@ func (UnimplementedUserServiceServer) GetUser(context.Context, *UserRequest) (*E
 func (UnimplementedUserServiceServer) DeleteUser(context.Context, *UserRequest) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
 }
-func (UnimplementedUserServiceServer) EgitUser(context.Context, *UserRequest) (*Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method EgitUser not implemented")
+func (UnimplementedUserServiceServer) EditUser(context.Context, *UserRequest) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EditUser not implemented")
 }
 func (UnimplementedUserServiceServer) SubscribeUser(context.Context, *UserRequest) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubscribeUser not implemented")
@@ -203,20 +203,20 @@ func _UserService_DeleteUser_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserService_EgitUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _UserService_EditUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServiceServer).EgitUser(ctx, in)
+		return srv.(UserServiceServer).EditUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: UserService_EgitUser_FullMethodName,
+		FullMethod: UserService_EditUser_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServiceServer).EgitUser(ctx, req.(*UserRequest))
+		return srv.(UserServiceServer).EditUser(ctx, req.(*UserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -277,8 +277,8 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _UserService_DeleteUser_Handler,
 		},
 		{
-			MethodName: "EgitUser",
-			Handler:    _UserService_EgitUser_Handler,
+			MethodName: "EditUser",
+			Handler:    _UserService_EditUser_Handler,
 		},
 		{
 			MethodName: "SubscribeUser",

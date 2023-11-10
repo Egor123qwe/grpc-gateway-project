@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/Egor123qwe/grpc-gateway-project/internal/config"
-	quotepb "github.com/Egor123qwe/grpc-gateway-project/proto/api/generate/desc"
+	"github.com/Egor123qwe/grpc-gateway-project/proto/api/generate/desc"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"golang.org/x/exp/slog"
 	"google.golang.org/grpc"
@@ -26,7 +26,7 @@ func Start(ctx context.Context, config *config.Config) error {
 	}
 
 	gwMux := runtime.NewServeMux()
-	err = quotepb.RegisterUserServiceHandler(context.Background(), gwMux, conn)
+	err = desc.RegisterUserServiceHandler(context.Background(), gwMux, conn)
 	if err != nil {
 		log.Fatalln("Failed to register gateway : ", err)
 	}
