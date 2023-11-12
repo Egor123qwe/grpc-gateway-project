@@ -1,8 +1,10 @@
 package grpcHandlers
 
 import (
+	"github.com/Egor123qwe/grpc-gateway-project/internal/models"
 	"github.com/Egor123qwe/grpc-gateway-project/internal/scenarios/serviceInterfaces"
 	"github.com/Egor123qwe/grpc-gateway-project/proto/api/generate/desc"
+	"google.golang.org/protobuf/types/known/emptypb"
 
 	"context"
 )
@@ -18,18 +20,33 @@ func New(scenarios serviceInterfaces.User) *Handlers {
 	}
 }
 
-func (h *Handlers) CreateUser(context.Context, *desc.Empty) (*desc.Empty, error) {
+func (h *Handlers) CreateUser(ctx context.Context, usr *desc.UserData) (*desc.UserAccessInfo, error) {
+	newUser, err := h.scenarios.CreateUser(
+		ctx,
+		&models.User{
+			Email: usr.GetEmail(),
+			Name:  usr.GetName(),
+			Age:   usr.GetAge(),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return &desc.UserAccessInfo{
+		Token: newUser.Token,
+		Id:    newUser.Id.Hex(),
+	}, nil
+}
+
+func (h *Handlers) GetUser(context.Context, *desc.UserRequest) (*desc.User, error) {
 	return nil, nil
 }
 
-func (h *Handlers) GetUser(context.Context, *desc.UserRequest) (*desc.Empty, error) {
+func (h *Handlers) DeleteUser(context.Context, *emptypb.Empty) (*emptypb.Empty, error) {
 	return nil, nil
 }
 
-func (h *Handlers) DeleteUser(context.Context, *desc.UserRequest) (*desc.Empty, error) {
-	return nil, nil
-}
-
-func (h *Handlers) EditUser(context.Context, *desc.UserRequest) (*desc.Empty, error) {
+func (h *Handlers) EditUser(context.Context, *desc.UserData) (*emptypb.Empty, error) {
 	return nil, nil
 }

@@ -11,6 +11,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -31,12 +32,12 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserServiceClient interface {
-	CreateUser(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Empty, error)
-	GetUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*Empty, error)
-	DeleteUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*Empty, error)
-	EditUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*Empty, error)
-	SubscribeUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*Empty, error)
-	UnsubscribeUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*Empty, error)
+	CreateUser(ctx context.Context, in *UserData, opts ...grpc.CallOption) (*UserAccessInfo, error)
+	GetUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*User, error)
+	DeleteUser(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	EditUser(ctx context.Context, in *UserData, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	SubscribeUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	UnsubscribeUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type userServiceClient struct {
@@ -47,8 +48,8 @@ func NewUserServiceClient(cc grpc.ClientConnInterface) UserServiceClient {
 	return &userServiceClient{cc}
 }
 
-func (c *userServiceClient) CreateUser(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
+func (c *userServiceClient) CreateUser(ctx context.Context, in *UserData, opts ...grpc.CallOption) (*UserAccessInfo, error) {
+	out := new(UserAccessInfo)
 	err := c.cc.Invoke(ctx, UserService_CreateUser_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -56,8 +57,8 @@ func (c *userServiceClient) CreateUser(ctx context.Context, in *Empty, opts ...g
 	return out, nil
 }
 
-func (c *userServiceClient) GetUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
+func (c *userServiceClient) GetUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*User, error) {
+	out := new(User)
 	err := c.cc.Invoke(ctx, UserService_GetUser_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -65,8 +66,8 @@ func (c *userServiceClient) GetUser(ctx context.Context, in *UserRequest, opts .
 	return out, nil
 }
 
-func (c *userServiceClient) DeleteUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
+func (c *userServiceClient) DeleteUser(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, UserService_DeleteUser_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -74,8 +75,8 @@ func (c *userServiceClient) DeleteUser(ctx context.Context, in *UserRequest, opt
 	return out, nil
 }
 
-func (c *userServiceClient) EditUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
+func (c *userServiceClient) EditUser(ctx context.Context, in *UserData, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, UserService_EditUser_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -83,8 +84,8 @@ func (c *userServiceClient) EditUser(ctx context.Context, in *UserRequest, opts 
 	return out, nil
 }
 
-func (c *userServiceClient) SubscribeUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
+func (c *userServiceClient) SubscribeUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, UserService_SubscribeUser_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -92,8 +93,8 @@ func (c *userServiceClient) SubscribeUser(ctx context.Context, in *UserRequest, 
 	return out, nil
 }
 
-func (c *userServiceClient) UnsubscribeUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
+func (c *userServiceClient) UnsubscribeUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, UserService_UnsubscribeUser_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -105,12 +106,12 @@ func (c *userServiceClient) UnsubscribeUser(ctx context.Context, in *UserRequest
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
 type UserServiceServer interface {
-	CreateUser(context.Context, *Empty) (*Empty, error)
-	GetUser(context.Context, *UserRequest) (*Empty, error)
-	DeleteUser(context.Context, *UserRequest) (*Empty, error)
-	EditUser(context.Context, *UserRequest) (*Empty, error)
-	SubscribeUser(context.Context, *UserRequest) (*Empty, error)
-	UnsubscribeUser(context.Context, *UserRequest) (*Empty, error)
+	CreateUser(context.Context, *UserData) (*UserAccessInfo, error)
+	GetUser(context.Context, *UserRequest) (*User, error)
+	DeleteUser(context.Context, *emptypb.Empty) (*emptypb.Empty, error)
+	EditUser(context.Context, *UserData) (*emptypb.Empty, error)
+	SubscribeUser(context.Context, *UserRequest) (*emptypb.Empty, error)
+	UnsubscribeUser(context.Context, *UserRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -118,22 +119,22 @@ type UserServiceServer interface {
 type UnimplementedUserServiceServer struct {
 }
 
-func (UnimplementedUserServiceServer) CreateUser(context.Context, *Empty) (*Empty, error) {
+func (UnimplementedUserServiceServer) CreateUser(context.Context, *UserData) (*UserAccessInfo, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
 }
-func (UnimplementedUserServiceServer) GetUser(context.Context, *UserRequest) (*Empty, error) {
+func (UnimplementedUserServiceServer) GetUser(context.Context, *UserRequest) (*User, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
 }
-func (UnimplementedUserServiceServer) DeleteUser(context.Context, *UserRequest) (*Empty, error) {
+func (UnimplementedUserServiceServer) DeleteUser(context.Context, *emptypb.Empty) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
 }
-func (UnimplementedUserServiceServer) EditUser(context.Context, *UserRequest) (*Empty, error) {
+func (UnimplementedUserServiceServer) EditUser(context.Context, *UserData) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method EditUser not implemented")
 }
-func (UnimplementedUserServiceServer) SubscribeUser(context.Context, *UserRequest) (*Empty, error) {
+func (UnimplementedUserServiceServer) SubscribeUser(context.Context, *UserRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubscribeUser not implemented")
 }
-func (UnimplementedUserServiceServer) UnsubscribeUser(context.Context, *UserRequest) (*Empty, error) {
+func (UnimplementedUserServiceServer) UnsubscribeUser(context.Context, *UserRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UnsubscribeUser not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
@@ -150,7 +151,7 @@ func RegisterUserServiceServer(s grpc.ServiceRegistrar, srv UserServiceServer) {
 }
 
 func _UserService_CreateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Empty)
+	in := new(UserData)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -162,7 +163,7 @@ func _UserService_CreateUser_Handler(srv interface{}, ctx context.Context, dec f
 		FullMethod: UserService_CreateUser_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServiceServer).CreateUser(ctx, req.(*Empty))
+		return srv.(UserServiceServer).CreateUser(ctx, req.(*UserData))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -186,7 +187,7 @@ func _UserService_GetUser_Handler(srv interface{}, ctx context.Context, dec func
 }
 
 func _UserService_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserRequest)
+	in := new(emptypb.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -198,13 +199,13 @@ func _UserService_DeleteUser_Handler(srv interface{}, ctx context.Context, dec f
 		FullMethod: UserService_DeleteUser_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServiceServer).DeleteUser(ctx, req.(*UserRequest))
+		return srv.(UserServiceServer).DeleteUser(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _UserService_EditUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserRequest)
+	in := new(UserData)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -216,7 +217,7 @@ func _UserService_EditUser_Handler(srv interface{}, ctx context.Context, dec fun
 		FullMethod: UserService_EditUser_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServiceServer).EditUser(ctx, req.(*UserRequest))
+		return srv.(UserServiceServer).EditUser(ctx, req.(*UserData))
 	}
 	return interceptor(ctx, in, info, handler)
 }

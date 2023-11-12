@@ -23,6 +23,7 @@ type server struct {
 
 func New() *server {
 	ctx := context.Background()
+
 	clientMongo, err := mongoDb.NewClient(ctx)
 	if err != nil {
 		log.Fatalln("error in connection mongo : %w", err)

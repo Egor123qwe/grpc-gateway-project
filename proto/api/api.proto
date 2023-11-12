@@ -3,51 +3,62 @@ syntax = "proto3";
 package api;
 
 import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
 option go_package = "generate/desc";
 
-message Empty {}
-
 message User {
-  int64 id = 1;
-  string token = 2;
-  string email = 3;
-  string name = 4;
-  int32 age = 5;
+  string id = 1;
+  UserData user = 2;
 }
 
-service UserService {
-  rpc CreateUser(Empty) returns (Empty) {
-    option (google.api.http) = {
-      post: "/user"
-    };
-  };
-  rpc GetUser(UserRequest) returns (Empty) {
-    option (google.api.http) = {
-      get: "/user"
-    };
-  };
-  rpc DeleteUser(UserRequest) returns (Empty){
-    option (google.api.http) = {
-      delete: "/user"
-    };
-  };
-  rpc EditUser(UserRequest) returns (Empty){
-    option (google.api.http) = {
-      put: "/user"
-    };
-  };
-  rpc SubscribeUser(UserRequest) returns (Empty){
-    option (google.api.http) = {
-      post: "/user/subscribe"
-    };
-  }
-  rpc UnsubscribeUser(UserRequest) returns (Empty) {
-    option (google.api.http) = {
-      delete: "/user/subscribe"
-    };
-  }
+message UserData {
+  string email = 1;
+  string name = 2;
+  int32 age = 3;
+}
+
+message UserAccessInfo {
+  string token = 1;
+  string id = 2;
 }
 
 message UserRequest {
   int64 id = 1;
+}
+
+service UserService {
+  rpc CreateUser(UserData) returns (UserAccessInfo) {
+    option (google.api.http) = {
+      post: "/user"
+      body: "*"
+    };
+  };
+  rpc GetUser(UserRequest) returns (User) {
+    option (google.api.http) = {
+      get: "/user"
+    };
+  };
+  rpc DeleteUser(google.protobuf.Empty) returns (google.protobuf.Empty){
+    option (google.api.http) = {
+      delete: "/user"
+    };
+  };
+  rpc EditUser(UserData) returns (google.protobuf.Empty){
+    option (google.api.http) = {
+      put: "/user"
+      body: "*"
+    };
+  };
+  rpc SubscribeUser(UserRequest) returns (google.protobuf.Empty){
+    option (google.api.http) = {
+      post: "/user/subscribe"
+      body: "*"
+    };
+  }
+  rpc UnsubscribeUser(UserRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/user/subscribe"
+      body: "*"
+    };
+  }
 }
