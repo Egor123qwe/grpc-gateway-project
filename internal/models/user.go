@@ -11,6 +11,6 @@ type User struct {
 }
 
 type SubscribeEvent struct {
-	UserId       string
 	SubscriberId string
+	ListenerId   string
 }

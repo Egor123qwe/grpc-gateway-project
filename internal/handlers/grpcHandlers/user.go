@@ -56,7 +56,7 @@ func (h *Handlers) GetUser(ctx context.Context, usr *desc.UserRequest) (*desc.Us
 }
 
 func (h *Handlers) DeleteUser(ctx context.Context, in *emptypb.Empty) (*emptypb.Empty, error) {
-	if err := h.scenarios.DeleteUser(ctx, "65513ee8b2600562e33e9b2b"); err != nil {
+	if err := h.scenarios.DeleteUser(ctx, "65525fc2d1c6dce25fcfd9e7"); err != nil {
 		return nil, err
 	}
 	return &emptypb.Empty{}, nil
