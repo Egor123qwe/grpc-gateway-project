@@ -1,6 +1,11 @@
-grpc:
-	protoc -I./proto --proto_path=proto/api \
-	--go_out=proto/api \
-	--go-grpc_out=proto/api \
-	--grpc-gateway_out=proto/api \
-	proto/api/api.proto
+#grpc compile config
+in_grpc_dir=proto/api
+out_grpc_dir=proto/api
+imports_grpc_dir=./proto
+
+compile_proto:
+	protoc -I$(imports_grpc_dir) --proto_path=$(in_grpc_dir) \
+	--go_out=$(out_grpc_dir) \
+	--go-grpc_out=$(out_grpc_dir) \
+	--grpc-gateway_out=allow_delete_body=true:$(out_grpc_dir) \
+	$(in_grpc_dir)/api.proto

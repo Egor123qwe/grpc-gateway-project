@@ -26,13 +26,16 @@ func Start(ctx context.Context, config *config.Config) error {
 	}
 
 	gwMux := runtime.NewServeMux()
+
+	//gwMux
+
 	err = desc.RegisterUserServiceHandler(context.Background(), gwMux, conn)
 	if err != nil {
 		log.Fatalln("Failed to register gateway : ", err)
 	}
 	gwServer := &http.Server{
 		Addr:    fmt.Sprintf(":%d", config.GateWayPort),
-		Handler: gwMux,
+		Handler: setGrpcMetadata(gwMux),
 	}
 	log.Println("serving grpc-gateway on http://localhost:8000")
 

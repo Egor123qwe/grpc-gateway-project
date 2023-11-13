@@ -1,6 +1,6 @@
 package mongoDb
 
-import "github.com/Egor123qwe/grpc-gateway-project/internal/tools"
+import "github.com/Egor123qwe/grpc-gateway-project/internal/services"
 
 type ConnectionMongo struct {
 	MongoHost       string
@@ -11,9 +11,9 @@ type ConnectionMongo struct {
 
 func NewConfig() ConnectionMongo {
 	return ConnectionMongo{
-		MongoHost:       tools.GetEnv("HOST_MONGO", "mongo"),
-		MongoPort:       tools.GetEnv("PORT_MONGO", "27017"),
-		MongoDBName:     tools.GetEnv("DBNAME_MONGO", "mongo"),
-		MongoCollection: tools.GetEnv("COLLECTION_MONGO", "quotes"),
+		MongoHost:       services.GetEnv("HOST_MONGO", "mongo"),
+		MongoPort:       services.GetEnv("PORT_MONGO", "27017"),
+		MongoDBName:     services.GetEnv("DBNAME_MONGO", "mongo"),
+		MongoCollection: services.GetEnv("COLLECTION_MONGO", "quotes"),
 	}
 }
