@@ -1,17 +1,14 @@
 package serviceInterfaces
 
 import (
-	"github.com/Egor123qwe/grpc-gateway-project/internal/models"
-	"github.com/Egor123qwe/grpc-gateway-project/proto/api/generate/desc"
-
 	"context"
+	"github.com/Egor123qwe/grpc-gateway-project/internal/models"
 )
 
 type User interface {
 	CreateUser(ctx context.Context, usr *models.User) (*models.User, error)
-	GetUser(id string) (*models.User, error)
-	DeleteUser(id string) error
-	EditUser(usr *desc.UserData) error
-	SubscribeUser(subscriberId string, userId string) error
-	UnsubscribeUser(subscriberId string, userId string) error
+	GetUser(ctx context.Context, id string) (*models.User, error)
+	DeleteUser(ctx context.Context, id string) error
+	SubscribeUser(ctx context.Context, ids *models.SubscribeEvent) error
+	UnsubscribeUser(ctx context.Context, ids *models.SubscribeEvent) error
 }

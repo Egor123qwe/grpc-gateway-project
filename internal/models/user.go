@@ -1,11 +1,16 @@
 package models
 
-import "go.mongodb.org/mongo-driver/bson/primitive"
-
 type User struct {
-	Id    primitive.ObjectID `bson:"_id"`
-	Email string
-	Name  string
-	Age   int32
-	Token string
+	Id            string `bson:"_id,omitempty"`
+	Email         string
+	Name          string
+	Age           int32
+	Subscribers   []string
+	Subscriptions []string
+	Token         string
+}
+
+type SubscribeEvent struct {
+	UserId       string
+	SubscriberId string
 }

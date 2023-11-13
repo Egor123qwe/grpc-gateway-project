@@ -23,7 +23,6 @@ const (
 	UserService_CreateUser_FullMethodName      = "/api.UserService/CreateUser"
 	UserService_GetUser_FullMethodName         = "/api.UserService/GetUser"
 	UserService_DeleteUser_FullMethodName      = "/api.UserService/DeleteUser"
-	UserService_EditUser_FullMethodName        = "/api.UserService/EditUser"
 	UserService_SubscribeUser_FullMethodName   = "/api.UserService/SubscribeUser"
 	UserService_UnsubscribeUser_FullMethodName = "/api.UserService/UnsubscribeUser"
 )
@@ -35,7 +34,6 @@ type UserServiceClient interface {
 	CreateUser(ctx context.Context, in *UserData, opts ...grpc.CallOption) (*UserAccessInfo, error)
 	GetUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*User, error)
 	DeleteUser(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	EditUser(ctx context.Context, in *UserData, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	SubscribeUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	UnsubscribeUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
@@ -75,15 +73,6 @@ func (c *userServiceClient) DeleteUser(ctx context.Context, in *emptypb.Empty, o
 	return out, nil
 }
 
-func (c *userServiceClient) EditUser(ctx context.Context, in *UserData, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, UserService_EditUser_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *userServiceClient) SubscribeUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, UserService_SubscribeUser_FullMethodName, in, out, opts...)
@@ -109,7 +98,6 @@ type UserServiceServer interface {
 	CreateUser(context.Context, *UserData) (*UserAccessInfo, error)
 	GetUser(context.Context, *UserRequest) (*User, error)
 	DeleteUser(context.Context, *emptypb.Empty) (*emptypb.Empty, error)
-	EditUser(context.Context, *UserData) (*emptypb.Empty, error)
 	SubscribeUser(context.Context, *UserRequest) (*emptypb.Empty, error)
 	UnsubscribeUser(context.Context, *UserRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedUserServiceServer()
@@ -127,9 +115,6 @@ func (UnimplementedUserServiceServer) GetUser(context.Context, *UserRequest) (*U
 }
 func (UnimplementedUserServiceServer) DeleteUser(context.Context, *emptypb.Empty) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
-}
-func (UnimplementedUserServiceServer) EditUser(context.Context, *UserData) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method EditUser not implemented")
 }
 func (UnimplementedUserServiceServer) SubscribeUser(context.Context, *UserRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubscribeUser not implemented")
@@ -204,24 +189,6 @@ func _UserService_DeleteUser_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserService_EditUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserData)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(UserServiceServer).EditUser(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: UserService_EditUser_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServiceServer).EditUser(ctx, req.(*UserData))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _UserService_SubscribeUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UserRequest)
 	if err := dec(in); err != nil {
@@ -276,10 +243,6 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteUser",
 			Handler:    _UserService_DeleteUser_Handler,
-		},
-		{
-			MethodName: "EditUser",
-			Handler:    _UserService_EditUser_Handler,
 		},
 		{
 			MethodName: "SubscribeUser",
