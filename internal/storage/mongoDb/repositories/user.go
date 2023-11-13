@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"github.com/Egor123qwe/grpc-gateway-project/internal/models"
+	"github.com/Egor123qwe/grpc-gateway-project/internal/storage/mongoDb/mongoServices"
 	"github.com/Egor123qwe/grpc-gateway-project/internal/storage/repsInterfaces"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -13,15 +14,19 @@ import (
 var userNotFoundErr = errors.New("user not found")
 
 type Users struct {
-	db *mongo.Collection
+	collection *mongo.Collection
+	client     *mongo.Client
 }
 
-func NewUserRep(db *mongo.Collection) repsInterfaces.User {
-	return &Users{db: db}
+func NewUserRep(collection *mongo.Collection, client *mongo.Client) repsInterfaces.User {
+	return &Users{
+		collection: collection,
+		client:     client,
+	}
 }
 
 func (s *Users) Create(ctx context.Context, usr *models.User) (*models.User, error) {
-	id, err := s.db.InsertOne(ctx, usr)
+	id, err := s.collection.InsertOne(ctx, usr)
 	if err != nil {
 		return nil, err
 	}
@@ -36,7 +41,7 @@ func (s *Users) Get(ctx context.Context, id string) (*models.User, error) {
 	}
 
 	var usr models.User
-	err = s.db.FindOne(ctx, bson.D{{"_id", userId}}).Decode(&usr)
+	err = s.collection.FindOne(ctx, bson.D{{"_id", userId}}).Decode(&usr)
 	if err != nil {
 		return nil, err
 	}
@@ -50,24 +55,31 @@ func (s *Users) Delete(ctx context.Context, id string) error {
 		return err
 	}
 
-	res, err := s.db.DeleteOne(ctx, bson.D{{"_id", userId}})
+	session, err := mongoServices.StartTransaction(ctx, s.client)
+	if err != nil {
+		return err
+	}
+	defer session.EndSession(ctx)
+
+	filter := bson.M{
+		"$or": []bson.M{
+			{"subscriptions": id},
+			{"subscribers": id},
+		},
+	}
+	update := bson.M{"$pull": bson.M{"subscriptions": id, "subscribers": id}}
+
+	_, err = s.collection.UpdateMany(context.Background(), filter, update)
+	if err != nil {
+		return err
+	}
+
+	res, err := s.collection.DeleteOne(ctx, bson.D{{"_id", userId}})
 	if err != nil {
 		return err
 	}
 	if res.DeletedCount == 0 {
 		return userNotFoundErr
 	}
-	return nil
-}
-
-func (s *Users) SubscribeUser(ctx context.Context, ids *models.SubscribeEvent) error {
-	_, err := primitive.ObjectIDFromHex(ids.UserId)
-	if err != nil {
-		return err
-	}
-
-	//filter := bson.M{"_id": userId}
-	//update := bson.M{"$addToSet": bson.M{"subscriptions": ids.SubscriberId}}
-
-	return nil
+	return session.CommitTransaction(ctx)
 }

@@ -24,15 +24,10 @@ type server struct {
 func New() *server {
 	ctx := context.Background()
 
-	clientMongo, err := mongoDb.NewClient(ctx)
+	storage, err := mongoDb.New(ctx)
 	if err != nil {
 		log.Fatalln("error in connection mongo : %w", err)
 	}
-	storage := mongoDb.New(clientMongo)
-	if err != nil {
-		log.Fatalln("error in creating database: ", err)
-	}
-
 	return &server{
 		config:   config.New(),
 		handlers: grpcHandlers.New(scenarios.New(storage)),

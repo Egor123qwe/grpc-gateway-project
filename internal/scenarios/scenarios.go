@@ -55,9 +55,9 @@ func (s *Scenarios) DeleteUser(ctx context.Context, id string) error {
 }
 
 func (s *Scenarios) SubscribeUser(ctx context.Context, ids *models.SubscribeEvent) error {
-	return nil
+	return s.storage.User().AddSubscribeEvent(ctx, ids)
 }
 
 func (s *Scenarios) UnsubscribeUser(ctx context.Context, ids *models.SubscribeEvent) error {
-	return nil
+	return s.storage.User().StealSubscribeEvent(ctx, ids)
 }
