@@ -31,7 +31,7 @@ message UserRequest {
 service UserService {
   rpc CreateUser(UserData) returns (UserAccessInfo) {
     option (google.api.http) = {
-      post: "/user"
+      post: "/user/{id}"
       body: "*"
     };
   };

@@ -27,8 +27,6 @@ func Start(ctx context.Context, config *config.Config) error {
 
 	gwMux := runtime.NewServeMux()
 
-	//gwMux
-
 	err = desc.RegisterUserServiceHandler(context.Background(), gwMux, conn)
 	if err != nil {
 		log.Fatalln("Failed to register gateway : ", err)
