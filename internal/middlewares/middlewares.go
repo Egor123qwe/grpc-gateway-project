@@ -15,13 +15,15 @@ func New(storage storage.Storage) grpc.UnaryServerInterceptor {
 	m := &Middlewares{
 		storage: storage,
 	}
-	return configureMainInterceptor(m.configureMethodInterceptors())
+	return configureMainInterceptor(m.configureMethodInterceptors("api"))
 }
 
-func (m *Middlewares) configureMethodInterceptors() map[string]grpc.UnaryServerInterceptor {
+func (m *Middlewares) configureMethodInterceptors(packageName string) map[string]grpc.UnaryServerInterceptor {
+	base := "/" + packageName + "."
 	return map[string]grpc.UnaryServerInterceptor{
-		"/package.Service/MethodA": grpc_middleware.ChainUnaryServer(),
-		"/package.Service/MethodB": grpc_middleware.ChainUnaryServer(),
+		base + "UserService/SubscribeUser":   grpc_middleware.ChainUnaryServer(m.auth()),
+		base + "UserService/UnsubscribeUser": grpc_middleware.ChainUnaryServer(m.auth()),
+		base + "UserService/DeleteUser":      grpc_middleware.ChainUnaryServer(m.auth()),
 	}
 }
 

@@ -83,3 +83,13 @@ func (s *Users) Delete(ctx context.Context, id string) error {
 	}
 	return session.CommitTransaction(ctx)
 }
+
+func (s *Users) GetUserByToken(ctx context.Context, token string) (*models.User, error) {
+	var usr models.User
+	err := s.collection.FindOne(ctx, bson.D{{"token", token}}).Decode(&usr)
+	if err != nil {
+		return nil, err
+	}
+
+	return &usr, nil
+}

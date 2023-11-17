@@ -61,3 +61,12 @@ func (s *Scenarios) SubscribeUser(ctx context.Context, ids *models.SubscribeEven
 func (s *Scenarios) UnsubscribeUser(ctx context.Context, ids *models.SubscribeEvent) error {
 	return s.storage.User().StealSubscribeEvent(ctx, ids)
 }
+
+func (s *Scenarios) GetUserByToken(ctx context.Context, token string) (*models.User, error) {
+	usr, err := s.storage.User().GetUserByToken(ctx, token)
+	if err != nil {
+		return nil, userNotFoundErr
+	}
+
+	return usr, nil
+}

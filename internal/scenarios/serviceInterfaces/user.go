@@ -11,4 +11,5 @@ type User interface {
 	DeleteUser(ctx context.Context, id string) error
 	SubscribeUser(ctx context.Context, ids *models.SubscribeEvent) error
 	UnsubscribeUser(ctx context.Context, ids *models.SubscribeEvent) error
+	GetUserByToken(ctx context.Context, token string) (*models.User, error)
 }

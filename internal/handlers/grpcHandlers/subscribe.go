@@ -11,8 +11,13 @@ import (
 )
 
 func (h *Handlers) SubscribeUser(ctx context.Context, usr *desc.UserRequest) (*emptypb.Empty, error) {
+	user, ok := ctx.Value(models.UserCtxKey).(*models.User)
+	if !ok {
+		return nil, status.Errorf(codes.Internal, "Failed to get user data")
+	}
+
 	if err := h.scenarios.SubscribeUser(ctx, &models.SubscribeEvent{
-		SubscriberId: "655325e8f6344ad8f0d9119e",
+		SubscriberId: user.Id,
 		ListenerId:   usr.GetId(),
 	}); err != nil {
 		return nil, status.Error(codes.InvalidArgument, err.Error())
@@ -22,8 +27,13 @@ func (h *Handlers) SubscribeUser(ctx context.Context, usr *desc.UserRequest) (*e
 }
 
 func (h *Handlers) UnsubscribeUser(ctx context.Context, usr *desc.UserRequest) (*emptypb.Empty, error) {
+	user, ok := ctx.Value(models.UserCtxKey).(*models.User)
+	if !ok {
+		return nil, status.Errorf(codes.Internal, "Failed to get user data")
+	}
+
 	if err := h.scenarios.UnsubscribeUser(ctx, &models.SubscribeEvent{
-		SubscriberId: "655325e8f6344ad8f0d9119e",
+		SubscriberId: user.Id,
 		ListenerId:   usr.GetId(),
 	}); err != nil {
 		return nil, status.Error(codes.InvalidArgument, err.Error())
