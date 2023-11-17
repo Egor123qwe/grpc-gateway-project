@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"github.com/Egor123qwe/grpc-gateway-project/internal/config"
+	"github.com/Egor123qwe/grpc-gateway-project/internal/middlewares"
+	"github.com/Egor123qwe/grpc-gateway-project/internal/storage"
 	"github.com/Egor123qwe/grpc-gateway-project/proto/api/generate/desc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -11,27 +13,41 @@ import (
 	"net"
 )
 
-func Start(ctx context.Context, service desc.UserServiceServer, config *config.Config) error {
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", config.GrpcPort))
+type server struct {
+	service desc.UserServiceServer
+	storage storage.Storage
+	config  *config.Config
+}
+
+func New(service desc.UserServiceServer, config *config.Config, storage storage.Storage) *server {
+	return &server{
+		service: service,
+		storage: storage,
+		config:  config,
+	}
+}
+
+func (s *server) Start(ctx context.Context) error {
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", s.config.GrpcPort))
 	if err != nil {
 		log.Fatalln("Failed to listen grpc server: ", err)
 	}
 
-	s := grpc.NewServer()
-	reflection.Register(s)
-	desc.RegisterUserServiceServer(s, service)
-	log.Printf("serving gRPC on http://localhost:%d\n", config.GrpcPort)
+	server := grpc.NewServer(grpc.UnaryInterceptor(middlewares.New(s.storage)))
+	reflection.Register(server)
+	desc.RegisterUserServiceServer(server, s.service)
+	log.Printf("serving gRPC on http://localhost:%d\n", s.config.GrpcPort)
 
 	errCh := make(chan error)
 	go func() {
 		defer close(errCh)
-		errCh <- s.Serve(lis)
+		errCh <- server.Serve(lis)
 	}()
 	select {
 	case err = <-errCh:
 		return err
 	case <-ctx.Done():
-		s.GracefulStop()
+		server.GracefulStop()
 	}
 	return nil
 }

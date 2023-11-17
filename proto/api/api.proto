@@ -31,13 +31,13 @@ message UserRequest {
 service UserService {
   rpc CreateUser(UserData) returns (UserAccessInfo) {
     option (google.api.http) = {
-      post: "/user/{id}"
+      post: "/user"
       body: "*"
     };
   };
   rpc GetUser(UserRequest) returns (User) {
     option (google.api.http) = {
-      get: "/user"
+      get: "/user/{id}"
     };
   };
   rpc DeleteUser(google.protobuf.Empty) returns (google.protobuf.Empty){
@@ -58,3 +58,7 @@ service UserService {
     };
   }
 }
+
+//1 - 14
+//2 -
+//15 - 10

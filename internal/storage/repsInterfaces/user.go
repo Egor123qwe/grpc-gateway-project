@@ -11,4 +11,5 @@ type User interface {
 	Delete(ctx context.Context, id string) error
 	AddSubscribeEvent(ctx context.Context, ids *models.SubscribeEvent) error
 	StealSubscribeEvent(ctx context.Context, ids *models.SubscribeEvent) error
+	GetUserByToken(ctx context.Context, token string) (*models.User, error)
 }

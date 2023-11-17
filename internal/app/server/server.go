@@ -43,7 +43,7 @@ func (s *server) Start() error {
 		return grpcGwServer.Start(ctx, s.config)
 	})
 	gr.Go(func() error {
-		return grpcServer.Start(ctx, s.handlers, s.config)
+		return grpcServer.New(s.handlers, s.config, s.storage).Start(ctx)
 	})
 	if err := gr.Wait(); err != nil {
 		slog.Error(err.Error())
