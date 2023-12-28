@@ -1,3 +1,5 @@
+DOCKER_COMPOSE = docker-compose
+
 #grpc compile config
 in_grpc_dir=proto/api
 out_grpc_dir=proto/api
@@ -9,3 +11,6 @@ compile_proto:
 	--go-grpc_out=$(out_grpc_dir) \
 	--grpc-gateway_out=allow_delete_body=true:$(out_grpc_dir) \
 	$(in_grpc_dir)/api.proto
+
+docker-compose-up:
+	$(DOCKER_COMPOSE) up --build
