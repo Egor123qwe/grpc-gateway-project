@@ -14,3 +14,6 @@ compile_proto:
 
 docker-compose-up:
 	$(DOCKER_COMPOSE) up --build
+
+# Default target
+#default: test
