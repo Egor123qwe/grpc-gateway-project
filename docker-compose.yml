@@ -5,13 +5,14 @@ networks:
 
 services:
   mongo:
+    container_name: 'mongo'
     networks:
       - internal
     image: 'mongo:4.4.6'
-    container_name: 'mongo'
     ports:
       - '27017:27017'
   server:
+    container_name: 'server'
     ports:
       - '8080:8080'
       - '8000:8000'

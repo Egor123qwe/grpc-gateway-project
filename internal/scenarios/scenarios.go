@@ -4,18 +4,27 @@ import (
 	"context"
 	"errors"
 	"github.com/Egor123qwe/grpc-gateway-project/internal/models"
-	"github.com/Egor123qwe/grpc-gateway-project/internal/scenarios/serviceInterfaces"
 	"github.com/Egor123qwe/grpc-gateway-project/internal/services"
 	"github.com/Egor123qwe/grpc-gateway-project/internal/storage"
 )
 
 var userNotFoundErr = errors.New("user not found")
 
+//go:generate mockgen -source=scenarios.go -destination=mocks/scenarios.go
+type User interface {
+	CreateUser(ctx context.Context, usr *models.User) (*models.User, error)
+	GetUser(ctx context.Context, id string) (*models.User, error)
+	DeleteUser(ctx context.Context, id string) error
+	SubscribeUser(ctx context.Context, ids *models.SubscribeEvent) error
+	UnsubscribeUser(ctx context.Context, ids *models.SubscribeEvent) error
+	GetUserByToken(ctx context.Context, token string) (*models.User, error)
+}
+
 type Scenarios struct {
 	storage storage.Storage
 }
 
-func New(storage storage.Storage) serviceInterfaces.User {
+func New(storage storage.Storage) User {
 	return &Scenarios{
 		storage: storage,
 	}
