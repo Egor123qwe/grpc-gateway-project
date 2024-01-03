@@ -8,9 +8,11 @@ import (
 	"github.com/Egor123qwe/grpc-gateway-project/internal/storage"
 )
 
-var userNotFoundErr = errors.New("user not found")
+var (
+	userNotFoundErr = errors.New("user not found")
+	emailEmptyErr   = errors.New("email is empty")
+)
 
-//go:generate mockgen -source=scenarios.go -destination=mocks/scenarios.go
 type User interface {
 	CreateUser(ctx context.Context, usr *models.User) (*models.User, error)
 	GetUser(ctx context.Context, id string) (*models.User, error)
@@ -38,6 +40,10 @@ func (s *Scenarios) CreateUser(ctx context.Context, usr *models.User) (*models.U
 	usr.Token = token
 	usr.Subscribers = []string{}
 	usr.Subscriptions = []string{}
+
+	if usr.Email == "" {
+		return nil, emailEmptyErr
+	}
 
 	newUser, err := s.storage.User().Create(ctx, usr)
 	if err != nil {

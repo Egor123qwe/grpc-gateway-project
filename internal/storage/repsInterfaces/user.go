@@ -5,6 +5,7 @@ import (
 	"github.com/Egor123qwe/grpc-gateway-project/internal/models"
 )
 
+//go:generate mockery --name User --output=./../testStorage/mocks
 type User interface {
 	Create(ctx context.Context, usr *models.User) (*models.User, error)
 	Get(ctx context.Context, id string) (*models.User, error)
