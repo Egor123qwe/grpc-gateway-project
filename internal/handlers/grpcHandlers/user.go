@@ -2,7 +2,7 @@ package grpcHandlers
 
 import (
 	"github.com/Egor123qwe/grpc-gateway-project/internal/models"
-	"github.com/Egor123qwe/grpc-gateway-project/internal/scenarios/serviceInterfaces"
+	"github.com/Egor123qwe/grpc-gateway-project/internal/scenarios"
 	"github.com/Egor123qwe/grpc-gateway-project/proto/api/generate/desc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -12,11 +12,11 @@ import (
 )
 
 type Handlers struct {
-	scenarios serviceInterfaces.User
+	scenarios scenarios.User
 	desc.UnimplementedUserServiceServer
 }
 
-func New(scenarios serviceInterfaces.User) *Handlers {
+func New(scenarios scenarios.User) *Handlers {
 	return &Handlers{
 		scenarios: scenarios,
 	}
