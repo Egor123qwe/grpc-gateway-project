@@ -26,6 +26,7 @@ func New(ctx context.Context) (*MongoDb, error) {
 	config := NewConfig()
 
 	mongoDBURL = fmt.Sprintf("mongodb://%s:%s", config.MongoHost, config.MongoPort)
+	fmt.Printf("Try to connect: %s\n", mongoDBURL)
 	clientOptions := options.Client().ApplyURI(mongoDBURL)
 
 	client, err := mongo.Connect(ctx, clientOptions)

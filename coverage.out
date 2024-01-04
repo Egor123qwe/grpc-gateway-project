@@ -1,18 +1,1 @@
 mode: set
-github.com/Egor123qwe/grpc-gateway-project/internal/scenarios/scenarios.go:27.40,31.2 1 0
-github.com/Egor123qwe/grpc-gateway-project/internal/scenarios/scenarios.go:33.93,35.16 2 0
-github.com/Egor123qwe/grpc-gateway-project/internal/scenarios/scenarios.go:35.16,37.3 1 0
-github.com/Egor123qwe/grpc-gateway-project/internal/scenarios/scenarios.go:38.2,43.16 5 0
-github.com/Egor123qwe/grpc-gateway-project/internal/scenarios/scenarios.go:43.16,45.3 1 0
-github.com/Egor123qwe/grpc-gateway-project/internal/scenarios/scenarios.go:46.2,46.21 1 0
-github.com/Egor123qwe/grpc-gateway-project/internal/scenarios/scenarios.go:49.83,51.16 2 0
-github.com/Egor123qwe/grpc-gateway-project/internal/scenarios/scenarios.go:51.16,53.3 1 0
-github.com/Egor123qwe/grpc-gateway-project/internal/scenarios/scenarios.go:55.2,55.17 1 0
-github.com/Egor123qwe/grpc-gateway-project/internal/scenarios/scenarios.go:58.70,59.57 1 0
-github.com/Egor123qwe/grpc-gateway-project/internal/scenarios/scenarios.go:59.57,61.3 1 0
-github.com/Egor123qwe/grpc-gateway-project/internal/scenarios/scenarios.go:63.2,63.12 1 0
-github.com/Egor123qwe/grpc-gateway-project/internal/scenarios/scenarios.go:66.90,68.2 1 0
-github.com/Egor123qwe/grpc-gateway-project/internal/scenarios/scenarios.go:70.92,72.2 1 0
-github.com/Egor123qwe/grpc-gateway-project/internal/scenarios/scenarios.go:74.93,76.16 2 0
-github.com/Egor123qwe/grpc-gateway-project/internal/scenarios/scenarios.go:76.16,78.3 1 0
-github.com/Egor123qwe/grpc-gateway-project/internal/scenarios/scenarios.go:80.2,80.17 1 0
